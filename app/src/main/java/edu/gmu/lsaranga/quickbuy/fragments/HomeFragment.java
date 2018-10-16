@@ -43,12 +43,12 @@ public class HomeFragment extends Fragment {
 
         RecyclerView storeView = view.findViewById(R.id.fragment_home_store_view);
         storeView.setHasFixedSize(true);
-        LinearLayoutManager MyLayoutManager = new LinearLayoutManager(getActivity());
-        MyLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         if (listitems.size() > 0) {
             storeView.setAdapter(new LogoImageAdapter(listitems));
         }
-        storeView.setLayoutManager(MyLayoutManager);
+        storeView.setLayoutManager(layoutManager);
 
         return view;
     }

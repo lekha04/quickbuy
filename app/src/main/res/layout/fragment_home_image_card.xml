@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView android:layout_width="match_parent"
+<android.support.v7.widget.CardView android:layout_width="300dp"
     android:layout_height="wrap_content"
     android:layout_marginLeft="@dimen/mtrl_card_spacing"
     android:layout_marginTop="@dimen/mtrl_card_spacing"
@@ -10,8 +10,8 @@
     <ImageView
                 android:id="@+id/coverImageView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="200dp"
                 android:layout_gravity="center"
-                android:scaleType="centerCrop"/>
+                android:scaleType="centerInside"/>
 
 </android.support.v7.widget.CardView>
