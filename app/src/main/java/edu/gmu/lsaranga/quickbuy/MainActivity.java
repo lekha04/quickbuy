@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,77 +25,77 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+import edu.gmu.lsaranga.quickbuy.fragments.CartFragment;
+import edu.gmu.lsaranga.quickbuy.fragments.HomeFragment;
+import edu.gmu.lsaranga.quickbuy.fragments.NotificationsFragment;
+
+public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     private ArrayList<String> data = new ArrayList<String>();
 
     private CartViewModel mCartViewModel;
-
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    setHome();
-                    return true;
-                case R.id.navigation_cart:
-                    setCart();
-                    return true;
-                case R.id.navigation_notifications:
-                    return false;
-            }
-            return false;
-        }
-    };
-
-    private void setCart() {
-        RecyclerView recyclerView = findViewById(R.id.recyclerview);
-        ListView lv = (ListView) findViewById(R.id.listview);
-        lv.setVisibility(View.INVISIBLE);
-        recyclerView.setVisibility(View.VISIBLE);
-    }
-
-    private void setHome() {
-        RecyclerView recyclerView = findViewById(R.id.recyclerview);
-        ListView lv = (ListView) findViewById(R.id.listview);
-        lv.setVisibility(View.VISIBLE);
-        recyclerView.setVisibility(View.INVISIBLE);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        BottomNavigationView navigation = findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(this);
 
-        RecyclerView recyclerView = findViewById(R.id.recyclerview);
-        final CartListAdapter adapter = new CartListAdapter(this);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//        RecyclerView recyclerView = findViewById(R.id.recyclerview);
+//        final CartListAdapter adapter = new CartListAdapter(this);
+//        recyclerView.setAdapter(adapter);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//
+//        mCartViewModel = ViewModelProviders.of(this).get(CartViewModel.class);
+//
+//        mCartViewModel.getAllItems().observe(this, new Observer<List<CartItem>>() {
+//            @Override
+//            public void onChanged(@Nullable final List<CartItem> words) {
+//                // Update the cached copy of the words in the adapter.
+//                adapter.setCartItems(words);
+//            }
+//        });
+//
+//        ListView lv = (ListView) findViewById(R.id.listview);
+//        generateListContent();
+//        lv.setAdapter(new MyListAdaper(this, R.layout.list_item, data));
 
-        mCartViewModel = ViewModelProviders.of(this).get(CartViewModel.class);
+        loadFragment(new HomeFragment());
+    }
 
-        mCartViewModel.getAllItems().observe(this, new Observer<List<CartItem>>() {
-            @Override
-            public void onChanged(@Nullable final List<CartItem> words) {
-                // Update the cached copy of the words in the adapter.
-                adapter.setCartItems(words);
-            }
-        });
-
-        ListView lv = (ListView) findViewById(R.id.listview);
-        generateListContent();
-        lv.setAdapter(new MyListAdaper(this, R.layout.list_item, data));
-
-        setHome();
+    private boolean loadFragment(Fragment fragment) {
+        //switching fragment
+        if (fragment != null) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .commit();
+            return true;
+        }
+        return false;
     }
 
     private void generateListContent() {
         data.addAll(Arrays.asList("Strawberries", "Peaches", "Apples", "Onions", "Tomatoes"));
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        Fragment fragment = null;
+        switch (item.getItemId()) {
+            case R.id.navigation_home:
+                fragment = new HomeFragment();
+                break;
+            case R.id.navigation_cart:
+                fragment = new CartFragment();
+                break;
+            case R.id.navigation_notifications:
+                fragment = new NotificationsFragment();
+                break;
+        }
+        return loadFragment(fragment);
     }
 
     private class MyListAdaper extends ArrayAdapter<String> {
