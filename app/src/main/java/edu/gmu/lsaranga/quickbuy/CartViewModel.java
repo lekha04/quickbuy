@@ -18,8 +18,11 @@ public class CartViewModel extends AndroidViewModel {
         mAllitems = mRepository.getAllItems();
     }
 
-    LiveData<List<CartItem>> getAllItems() { return mAllitems; }
+    public LiveData<List<CartItem>> getAllItems() { return mAllitems; }
 
     public void insert(CartItem word) { mRepository.insert(word); }
 
+    public void clear() {
+        mRepository.deleteAll();
+    }
 }

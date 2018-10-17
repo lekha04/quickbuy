@@ -8,14 +8,18 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
+import edu.gmu.lsaranga.quickbuy.ImageCard;
 import edu.gmu.lsaranga.quickbuy.R;
+import edu.gmu.lsaranga.quickbuy.eventlisteners.OnItemClickListener;
 import edu.gmu.lsaranga.quickbuy.views.ImageCardHolder;
 
 public class LogoImageAdapter extends RecyclerView.Adapter<ImageCardHolder> {
-    private ArrayList<LogoImage> list;
+    private ArrayList<ImageCard> list;
+    private OnItemClickListener listener;
 
-    public LogoImageAdapter(ArrayList<LogoImage> Data) {
+    public LogoImageAdapter(ArrayList<ImageCard> Data, OnItemClickListener listener) {
         list = Data;
+        this.listener = listener;
     }
 
     @NonNull
@@ -29,7 +33,7 @@ public class LogoImageAdapter extends RecyclerView.Adapter<ImageCardHolder> {
 
     @Override
     public void onBindViewHolder(final ImageCardHolder holder, int position) {
-        holder.coverImageView.setImageResource(list.get(position).getImageResourceId());
+        holder.bind(list.get(position), listener);
     }
 
     @Override
